@@ -4,6 +4,12 @@
 #
 #
 configfile: "config.yaml"
+
+rule all:
+    input:
+        config["output_folder"]"/"config["pop"]"/chr{chr}.haps.gz",
+        config["output_folder"]"/"config["pop"]"/chr{chr}.samples"
+
 #First we need to phase our data
 #preferred input files format are vcf, but we will handle also plink formatted files
 rule phase:
@@ -15,7 +21,7 @@ rule phase:
         input_f=config["input_folder"],
         g_map="/netapp/nfs/resources/1000GP_phase3/impute/genetic_map_chr{chr}_combined_b37.txt"
     output:
-        chr_phased=config["output_folder"]"/"config["pop"]"/chr{chr}.haps.gz"
+        chr_phased=config["output_folder"]"/"config["pop"]"/chr{chr}.haps.gz",
         samples=config["output_folder"]"/"config["pop"]"/chr{chr}.samples"
     threads: 8
     shell:
