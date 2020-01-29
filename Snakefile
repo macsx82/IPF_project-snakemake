@@ -11,9 +11,13 @@ def generate_shapeit_out_files(key):
 
     return chr_phased,samples
 
+def generate_end_of_pipeline_files(key):
+    return "%s/%s/chr%s.pipe.done" % (config["output_folder"],config["pop"],key)
+
+
 rule all:
     input:
-        generate_shapeit_out_files("{chr}")
+        generate_end_of_pipeline_files("{chr}")
 #First we need to phase our data
 #preferred input files format are vcf, but we will handle also plink formatted files
 rule phase:
@@ -32,3 +36,11 @@ rule phase:
     threads: 8
     shell:
         "shapeit -V {input_f}/{input} -M {g_map} -O {chr_phased} {samples} -T {threads}"
+
+rule pipe_finish:
+    input:
+        generate_shapeit_out_files("{chr}")
+    output:
+        generate_end_of_pipeline_files("{chr}")
+    shell:
+        "touch {output}"
