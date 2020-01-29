@@ -1,35 +1,35 @@
 #config file in yaml format for the IPF pipeline
 #
 #
-
-pop: "CARL"
+pop:
+  "CARL"
 #we need to start with the vcf files input for the phasing step
 chr_to_phase:
-	1: 1.vcf.gz
-	2: 2.vcf.gz
-	3: 3.vcf.gz
-	4: 4.vcf.gz
-	5: 5.vcf.gz
-	6: 6.vcf.gz
-	7: 7.vcf.gz
-	8: 8.vcf.gz
-	9: 9.vcf.gz
-	10: 10.vcf.gz
-	11: 11.vcf.gz
-	12: 12.vcf.gz
-	13: 13.vcf.gz
-	14: 14.vcf.gz
-	15: 15.vcf.gz
-	16: 16.vcf.gz
-	17: 17.vcf.gz
-	18: 18.vcf.gz
-	19: 19.vcf.gz
-	20: 20.vcf.gz
-	21: 21.vcf.gz
-	22: 22.vcf.gz
+  1: 1.vcf.gz
+  2: 2.vcf.gz
+  3: 3.vcf.gz
+  4: 4.vcf.gz
+  5: 5.vcf.gz
+  6: 6.vcf.gz
+  7: 7.vcf.gz
+  8: 8.vcf.gz
+  9: 9.vcf.gz
+  10: 10.vcf.gz
+  11: 11.vcf.gz
+  12: 12.vcf.gz
+  13: 13.vcf.gz
+  14: 14.vcf.gz
+  15: 15.vcf.gz
+  16: 16.vcf.gz
+  17: 17.vcf.gz
+  18: 18.vcf.gz
+  19: 19.vcf.gz
+  20: 20.vcf.gz
+  21: 21.vcf.gz
+  22: 22.vcf.gz
 input_folder:
-	"/netapp/dati/INGI_WGS/18112015/CARL/12112015_FILTERED_REL/30092016_CONV_ID/07022018_VEP90_CSQ"
+  "/netapp/dati/INGI_WGS/18112015/CARL/12112015_FILTERED_REL/30092016_CONV_ID/07022018_VEP90_CSQ"
 genetic_map_chr:
-	"/netapp/nfs/resources/1000GP_phase3/impute/genetic_map_chr{chr_to_phase}_combined_b37.txt"
+  "/netapp/nfs/resources/1000GP_phase3/impute/genetic_map_chr{chr_to_phase}_combined_b37.txt"
 output_folder:
-	"/home/cocca/analyses/IPF_pj"
+  "/home/cocca/analyses/IPF_pj"
