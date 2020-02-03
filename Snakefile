@@ -20,7 +20,7 @@ def generate_end_of_pipeline_files(key):
 
 rule all:
     input:
-        lambda wildcards: config["chr_to_phase"][wildcards.chr],
+        # lambda wildcards: config["chr_to_phase"][wildcards.chr],
         generate_end_of_pipeline_files("{chr}")
 #First we need to phase our data
 #preferred input files format are vcf, but we will handle also plink formatted files
@@ -42,7 +42,7 @@ rule phase:
 
 rule pipe_finish:
     input:
-        lambda wildcards: config["chr_to_phase"][wildcards.chr],
+        # lambda wildcards: config["chr_to_phase"][wildcards.chr],
         generate_shapeit_out_files("{chr}")
     output:
         generate_end_of_pipeline_files("{chr}")
