@@ -5,7 +5,7 @@
 #
 configfile: "config.yaml"
 
-print (config['chr_to_phase'])
+print (config['chr_to_phase'].keys())
 
 
 def generate_shapeit_out_files(key):
