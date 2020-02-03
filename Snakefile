@@ -30,7 +30,7 @@ rule phase:
         input_f=config["input_folder"],
         g_map="/netapp/nfs/resources/1000GP_phase3/impute/genetic_map_chr{chr}_combined_b37.txt"
     output:
-        chr_phased,samples=generate_shapeit_out_files("{chr}")
+        generate_shapeit_out_files("{chr}")
         # chr_phased=config["output_folder"]"/"config["pop"]"/chr{chr}.haps.gz",
         # samples=config["output_folder"]"/"config["pop"]"/chr{chr}.samples"
     threads: 8
