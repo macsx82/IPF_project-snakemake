@@ -5,6 +5,9 @@
 #
 configfile: "config.yaml"
 
+print (config['chr_to_phase'])
+
+
 def generate_shapeit_out_files(key):
     chr_phased= "%s/%s/chr%s.haps.gz" % (config["output_folder"],config["pop"], key)
     samples= "%s/%s/chr%s.samples" % (config["output_folder"],config["pop"],key)
