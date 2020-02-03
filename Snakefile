@@ -18,7 +18,7 @@ def generate_end_of_pipeline_files(key):
 rule all:
     input:
         lambda wildcards: config["chr_to_phase"][wildcards.chr],
-        generate_end_of_pipeline_files("{chr}")
+        generate_end_of_pipeline_files("{wildcards.chr}")
 #First we need to phase our data
 #preferred input files format are vcf, but we will handle also plink formatted files
 rule phase:
@@ -28,9 +28,9 @@ rule phase:
         # chr_to_phase="{input_folder}/{chr}.vcf.gz"
     params:
         input_f=config["input_folder"],
-        g_map="/netapp/nfs/resources/1000GP_phase3/impute/genetic_map_chr{chr}_combined_b37.txt"
+        g_map="/netapp/nfs/resources/1000GP_phase3/impute/genetic_map_chr{wildcards.chr}_combined_b37.txt"
     output:
-        generate_shapeit_out_files("{chr}")
+        generate_shapeit_out_files("{wildcards.chr}")
         # chr_phased=config["output_folder"]"/"config["pop"]"/chr{chr}.haps.gz",
         # samples=config["output_folder"]"/"config["pop"]"/chr{chr}.samples"
     threads: 8
@@ -39,8 +39,8 @@ rule phase:
 
 rule pipe_finish:
     input:
-        generate_shapeit_out_files("{chr}")
+        generate_shapeit_out_files("{wildcards.chr}")
     output:
-        generate_end_of_pipeline_files("{chr}")
+        generate_end_of_pipeline_files("{wildcards.chr}")
     shell:
         "touch {output}"
