@@ -45,7 +45,7 @@ rule phase:
     threads: 2
     shell:
         # "shapeit -V {input_f}/{input} -M {g_map} -O {output.chr_phased} {output.samples} -T {threads}"
-        "shapeit -V {input} -M {g_map} -O {output.chr_phased} {output.samples} -T {threads}"
+        "shapeit -V {input} -M {params.g_map} -O {output.chr_phased} {output.samples} -T {threads}"
         # "touch {output.chr_phased} {output.samples}"
 
 rule pipe_finish:
