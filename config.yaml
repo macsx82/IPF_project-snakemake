@@ -4,6 +4,7 @@
 pop:
   "CARL"
 #we need to start with the vcf files input for the phasing step
+chr: "1"
 chr_to_phase:
   1: 1.vcf.gz
   2: 2.vcf.gz
