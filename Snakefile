@@ -42,10 +42,11 @@ rule phase:
         # generate_shapeit_out_files("{chr}")
         chr_phased=config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+".haps.gz",
         samples=config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+".samples"
-    threads: 8
+    threads: 2
     shell:
         # "shapeit -V {input_f}/{input} -M {g_map} -O {output.chr_phased} {output.samples} -T {threads}"
-        "touch {output.chr_phased} {output.samples}"
+        "shapeit -V {input} -M {g_map} -O {output.chr_phased} {output.samples} -T {threads}"
+        # "touch {output.chr_phased} {output.samples}"
 
 rule pipe_finish:
     input:
