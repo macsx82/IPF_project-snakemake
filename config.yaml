@@ -29,7 +29,8 @@ chr_to_phase:
   21: 21.vcf.gz
   22: 22.vcf.gz
 input_folder:
-  "/netapp/dati/INGI_WGS/18112015/CARL/12112015_FILTERED_REL/30092016_CONV_ID/07022018_VEP90_CSQ"
+  # "/netapp/dati/INGI_WGS/18112015/CARL/12112015_FILTERED_REL/30092016_CONV_ID/07022018_VEP90_CSQ"
+  "/netapp/dati/INGI_WGS/18112015/CARL/12112015_FILTERED_REL/30092016_CONV_ID/07022018_VEP90_CSQ/NO_MULTI_05022020"
 genetic_map_chr:
   "/netapp/nfs/resources/1000GP_phase3/impute/genetic_map_chr{chr_to_phase}_combined_b37.txt"
 output_folder:
