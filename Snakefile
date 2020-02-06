@@ -175,8 +175,20 @@ rule relate_pop_s_est:
         # base_out + "/chr"+config["chr"]+"_relate_popsize"
     shell:
         # "shapeit -V {input_f}/{input} -M {g_map} -O {output.chr_phased} {output.samples} -T {threads}"
-        "{config[relate_path]}/scripts/EstimatePopulationSize/EstimatePopulationSize.sh -i {params.in_prefix} --poplabels {input.poplabel_file} -m 1.25e-8 "
-        " --threshold {params.relate_threshold} --seed {config[relate_seed]} -o {params.out_prefix}"
+        """
+        set +e
+        {config[relate_path]}/scripts/EstimatePopulationSize/EstimatePopulationSize.sh -i {params.in_prefix} --poplabels {input.poplabel_file} -m 1.25e-8 
+         --threshold {params.relate_threshold} --seed {config[relate_seed]} -o {params.out_prefix}
+        exitcode=$?
+        if [ $exitcode -eq 0 ]
+        then
+            echo "No error found..exiting correctly"
+            exit 0
+        else
+            echo "WARNING....The software raised some errors or warning, be careful and check the results."
+            exit 0
+        fi
+        """
 
 rule relate_mut_rate_est:
     input:
@@ -196,7 +208,19 @@ rule relate_mut_rate_est:
         # base_out + "/chr"+config["chr"]+"_relate_popsize"
     shell:
         # "shapeit -V {input_f}/{input} -M {g_map} -O {output.chr_phased} {output.samples} -T {threads}"
-        "{config[relate_path]}/bin/RelateMutationRate --mode Avg -i {params.in_prefix} -o {params.out_prefix}"
+        """
+        set +e
+        {config[relate_path]}/bin/RelateMutationRate --mode Avg -i {params.in_prefix} -o {params.out_prefix}
+        exitcode=$?
+        if [ $exitcode -eq 0 ]
+        then
+            echo "No error found..exiting correctly"
+            exit 0
+        else
+            echo "WARNING....The software raised some errors or warning, be careful and check the results."
+            exit 0
+        fi        
+        """
 
 rule pipe_finish:
     # params:
