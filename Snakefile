@@ -37,11 +37,12 @@ rule phase:
     params:
         input_f=config["input_folder"],
         g_map="/netapp/nfs/resources/1000GP_phase3/impute/genetic_map_chr"+config["chr"]+"_combined_b37.txt"
+        base_out=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"]
     output:
         # generate_shapeit_out_files("{input.chr}")
         # generate_shapeit_out_files("{chr}")
-        chr_phased=config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+".haps.gz",
-        samples=config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+".samples"
+        chr_phased=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"] + "/chr"+config["chr"]+".haps.gz",
+        samples= base_out + "/chr"+config["chr"]+".samples"
     # threads: 2
     shell:
         # "shapeit -V {input_f}/{input} -M {g_map} -O {output.chr_phased} {output.samples} -T {threads}"
@@ -53,10 +54,11 @@ rule relate_poplabels:
         config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+".samples"
     params:
         input_f=config["input_folder"],
+        base_out=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"]
     output:
         # generate_shapeit_out_files("{input.chr}")
         # generate_shapeit_out_files("{chr}")
-        config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+".poplabels"
+        base_out + "/chr"+config["chr"]+".poplabels"
     shell:
         # "shapeit -V {input_f}/{input} -M {g_map} -O {output.chr_phased} {output.samples} -T {threads}"
         "(echo \"sample population group sex\";tail -n+3 {input} | awk '{{OFS=" "}}{{print $1,{config[pop_group]},{config[pop]},$6}}') > {output}"
@@ -68,10 +70,11 @@ rule relate:
     params:
         input_f=config["input_folder"],
         g_map="/netapp/nfs/resources/1000GP_phase3/impute/genetic_map_chr"+config["chr"]+"_combined_b37.txt"
+        base_out=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"]
     output:
         # generate_shapeit_out_files("{input.chr}")
         # generate_shapeit_out_files("{chr}")
-        config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+"_relate"
+        base_out + "/chr"+config["chr"]+"_relate"
     shell:
         # "shapeit -V {input_f}/{input} -M {g_map} -O {output.chr_phased} {output.samples} -T {threads}"
         "{config[relate_path]}/bin/Relate --mode All --m 1.25e-8 -N 30000 --haps {input.chr_phased} --sample {input.samples} --map {params.g_map} --seed {config[relate_seed]} -o {output}"
@@ -83,10 +86,11 @@ rule relate_pop_s_est:
     params:
         input_f=config["input_folder"],
         g_map="/netapp/nfs/resources/1000GP_phase3/impute/genetic_map_chr"+config["chr"]+"_combined_b37.txt"
+        base_out=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"]
     output:
         # generate_shapeit_out_files("{input.chr}")
         # generate_shapeit_out_files("{chr}")
-        config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+"_relate_popsize"
+        base_out + "/chr"+config["chr"]+"_relate_popsize"
     shell:
         # "shapeit -V {input_f}/{input} -M {g_map} -O {output.chr_phased} {output.samples} -T {threads}"
         "{config[relate_path]}/scripts/EstimatePopulationSize/EstimatePopulationSize.sh -i {input.relate_files} --poplabels{input.poplabel_file} --m 1.25e-8 \ "
@@ -109,6 +113,8 @@ rule relate_pop_s_est:
 #         "--map {params.g_map} --seed 1 -o {output}"
 
 rule pipe_finish:
+    params:
+        base_out=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"]
     input:
         # lambda wildcards: config["chr_to_phase"][wildcards.chr],
         # generate_shapeit_out_files("{chr}")
@@ -117,7 +123,7 @@ rule pipe_finish:
         # chr_phased=config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+".haps.gz",
         # samples=config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+".samples"
         # config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+"_relate"
-        config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+"_relate_popsize"
+        base_out + "/chr"+config["chr"]+"_relate_popsize"
     output:
         # generate_end_of_pipeline_files("{chr}")
         # config["output_folder"]+"/"+config["pop"]+"/{chr}.pipe.done"
