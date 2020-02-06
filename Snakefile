@@ -52,7 +52,8 @@ rule phase:
 
 rule relate_poplabels:
     input:
-        config["output_folder"] + "/" + config["pop"] + "/" + config["chr"] + "/chr"+config["chr"]+".samples"
+        # config["output_folder"] + "/" + config["pop"] + "/" + config["chr"] + "/chr"+config["chr"]+".samples"
+        generate_shapeit_out_files(config["chr"])
     params:
         input_f=config["input_folder"],
         base_out=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"]
@@ -62,7 +63,7 @@ rule relate_poplabels:
         config["output_folder"] + "/" + config["pop"] + "/" + config["chr"] + "/chr"+config["chr"]+".poplabels"
     shell:
         # "shapeit -V {input_f}/{input} -M {g_map} -O {output.chr_phased} {output.samples} -T {threads}"
-        "(echo \"sample population group sex\";tail -n+3 {input} | awk '{{OFS=\" \"}}{{print $1,\"{config[pop_group]}\",\"{config[pop]}\",$6}}') > {params.base_out}/{output}"
+        "(echo \"sample population group sex\";tail -n+3 {input[1]} | awk '{{OFS=\" \"}}{{print $1,\"{config[pop_group]}\",\"{config[pop]}\",$6}}') > {params.base_out}/{output}"
 
 rule relate:
     input:
