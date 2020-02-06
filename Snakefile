@@ -51,7 +51,7 @@ rule phase:
 
 rule relate_poplabels:
     input:
-        config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+".samples"
+        config["output_folder"] + "/" + config["pop"] + "/" + config["chr"] + "/chr"+config["chr"]+".samples"
     params:
         input_f=config["input_folder"],
         base_out=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"]
