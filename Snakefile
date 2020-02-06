@@ -132,7 +132,7 @@ rule relate_mut_rate_est:
         # generate_shapeit_out_files("{input.chr}")
         # generate_shapeit_out_files("{chr}")
         # multiext(config["output_folder"] + "/" + config["pop"] + "/" + config["chr"]+ "/chr"+config["chr"]+"_relate_popsize", ".pdf",".anc.gz",".mut.gz",".dist",".coal",".bin","_avg.rate")
-        expand(config["output_folder"] + "/" + config["pop"] + "/" + config["chr"]+ "/chr"+config["chr"]+"_relate_mut_rate{ext}", ext=["_avg.rate"])
+        config["output_folder"] + "/" + config["pop"] + "/" + config["chr"]+ "/chr"+config["chr"]+"_relate_mut_rate_avg.rate"
         # base_out + "/chr"+config["chr"]+"_relate_popsize"
     shell:
         # "shapeit -V {input_f}/{input} -M {g_map} -O {output.chr_phased} {output.samples} -T {threads}"
@@ -150,6 +150,7 @@ rule pipe_finish:
         # samples=config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+".samples"
         # config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+"_relate"
         # base_out + "/chr"+config["chr"]+"_relate_popsize"
+        config["output_folder"] + "/" + config["pop"] + "/" + config["chr"]+ "/chr"+config["chr"]+"_relate_mut_rate_avg.rate",
         expand(config["output_folder"] + "/" + config["pop"] + "/" + config["chr"]+ "/chr"+config["chr"]+"_relate_popsize{ext}", ext=[".pdf",".anc.gz",".mut.gz",".dist",".coal",".bin","_avg.rate"])
     output:
         # generate_end_of_pipeline_files("{chr}")
