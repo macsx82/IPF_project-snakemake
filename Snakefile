@@ -177,7 +177,7 @@ rule relate_pop_s_est:
         # "shapeit -V {input_f}/{input} -M {g_map} -O {output.chr_phased} {output.samples} -T {threads}"
         """
         set +e
-        {config[relate_path]}/scripts/EstimatePopulationSize/EstimatePopulationSize.sh -i {params.in_prefix} --poplabels {input.poplabel_file} -m 1.25e-8 
+        {config[relate_path]}/scripts/EstimatePopulationSize/EstimatePopulationSize.sh -i {params.in_prefix} --poplabels {input.poplabel_file} -m 1.25e-8 \
          --threshold {params.relate_threshold} --seed {config[relate_seed]} -o {params.out_prefix}
         exitcode=$?
         if [ $exitcode -eq 0 ]
