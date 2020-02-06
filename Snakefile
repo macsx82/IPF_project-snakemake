@@ -42,11 +42,71 @@ rule phase:
         # generate_shapeit_out_files("{chr}")
         chr_phased=config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+".haps.gz",
         samples=config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+".samples"
-    threads: 2
+    # threads: 2
     shell:
         # "shapeit -V {input_f}/{input} -M {g_map} -O {output.chr_phased} {output.samples} -T {threads}"
-        "shapeit -V {input} -M {params.g_map} -O {output.chr_phased} {output.samples} -T {threads}"
+        "{config[shapeit_path]} -V {input} -M {params.g_map} -O {output.chr_phased} {output.samples} -T {threads}"
         # "touch {output.chr_phased} {output.samples}"
+
+rule relate_poplabels:
+    input:
+        config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+".samples"
+    params:
+        input_f=config["input_folder"],
+    output:
+        # generate_shapeit_out_files("{input.chr}")
+        # generate_shapeit_out_files("{chr}")
+        config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+".poplabels"
+    shell:
+        # "shapeit -V {input_f}/{input} -M {g_map} -O {output.chr_phased} {output.samples} -T {threads}"
+        "(echo \"sample population group sex\";tail -n+3 {input} | awk '{OFS=" "}{print $1,{pop_group},{pop},$6}') > {output}"
+
+rule relate:
+    input:
+        chr_phased=config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+".haps.gz",
+        samples=config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+".samples"
+    params:
+        input_f=config["input_folder"],
+        g_map="/netapp/nfs/resources/1000GP_phase3/impute/genetic_map_chr"+config["chr"]+"_combined_b37.txt"
+    output:
+        # generate_shapeit_out_files("{input.chr}")
+        # generate_shapeit_out_files("{chr}")
+        config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+"_relate"
+    shell:
+        # "shapeit -V {input_f}/{input} -M {g_map} -O {output.chr_phased} {output.samples} -T {threads}"
+        "{config[relate_path]}/bin/Relate --mode All --m 1.25e-8 -N 30000 --haps {input.chr_phased} --sample {input.samples} --map {params.g_map} --seed {config[relate_seed]} -o {output}"
+
+# rule relate_pop_s_est:
+#     input:
+#         relate_files=config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+"_relate",
+#         poplabel_file=config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+".poplabels"
+#     params:
+#         input_f=config["input_folder"],
+#         g_map="/netapp/nfs/resources/1000GP_phase3/impute/genetic_map_chr"+config["chr"]+"_combined_b37.txt"
+#     output:
+#         # generate_shapeit_out_files("{input.chr}")
+#         # generate_shapeit_out_files("{chr}")
+#         config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+"_relate_popsize"
+#     shell:
+#         # "shapeit -V {input_f}/{input} -M {g_map} -O {output.chr_phased} {output.samples} -T {threads}"
+#         "{config[relate_path]}/scripts/EstimatePopulationSize/EstimatePopulationSize.sh -i {input.relate_files} --poplabels{input.poplabel_file} --m 1.25e-8 \ "
+#         " --seed {config[relate_seed]} -o {output}"
+
+# rule relate_mut_rate_est:
+#     input:
+#         chr_phased=config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+".haps.gz",
+#         samples=config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+".samples"
+#     params:
+#         input_f=config["input_folder"],
+#         g_map="/netapp/nfs/resources/1000GP_phase3/impute/genetic_map_chr"+config["chr"]+"_combined_b37.txt"
+#     output:
+#         # generate_shapeit_out_files("{input.chr}")
+#         # generate_shapeit_out_files("{chr}")
+#         config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+"_relate",
+#     shell:
+#         # "shapeit -V {input_f}/{input} -M {g_map} -O {output.chr_phased} {output.samples} -T {threads}"
+#         "{config[relate_path]} --mode All --m 1.25e-8 -N 30000 --haps {input.chr_phased} --sample {input.samples} \ "
+#         "--map {params.g_map} --seed 1 -o {output}"
 
 rule pipe_finish:
     input:
@@ -54,8 +114,10 @@ rule pipe_finish:
         # generate_shapeit_out_files("{chr}")
         # chr_phased=config["output_folder"] + "/" + config["pop"] + "/chr{chr}.haps.gz",
         # samples=config["output_folder"] + "/" + config["pop"] + "/chr{chr}.samples"
-        chr_phased=config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+".haps.gz",
-        samples=config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+".samples"
+        # chr_phased=config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+".haps.gz",
+        # samples=config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+".samples"
+        config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+"_relate"
+        # config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+"_relate_popsize"
     output:
         # generate_end_of_pipeline_files("{chr}")
         # config["output_folder"]+"/"+config["pop"]+"/{chr}.pipe.done"

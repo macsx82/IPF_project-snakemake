@@ -3,6 +3,8 @@
 #
 pop:
   "CARL"
+pop_group:
+  "EUR"
 #we need to start with the vcf files input for the phasing step
 chr: "22"
 chr_to_phase:
@@ -36,7 +38,14 @@ genetic_map_chr:
 output_folder:
   "/home/cocca/analyses/IPF_pj"
 
+shapeit_path:
+  "/share/apps/bio/bin/shapeit"
 
+relate_path:
+  "/shared/softwares/Relate/relate_v1.0.17_x86_64_static"
+
+relate_seed:
+  152433333
 # config_text = """
 # pop:
 #   CARL
