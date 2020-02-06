@@ -42,7 +42,7 @@ rule phase:
         # generate_shapeit_out_files("{input.chr}")
         # generate_shapeit_out_files("{chr}")
         chr_phased=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"] + "/chr"+config["chr"]+".haps.gz",
-        samples= {params.base_out} + "/chr"+config["chr"]+".samples"
+        samples= params[base_out] + "/chr"+config["chr"]+".samples"
     # threads: 2
     shell:
         # "shapeit -V {input_f}/{input} -M {g_map} -O {output.chr_phased} {output.samples} -T {threads}"
