@@ -119,8 +119,8 @@ rule relate_pop_s_est:
 #         "--map {params.g_map} --seed 1 -o {output}"
 
 rule pipe_finish:
-    params:
-        base_out=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"]
+    # params:
+    #     base_out=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"]
     input:
         # lambda wildcards: config["chr_to_phase"][wildcards.chr],
         # generate_shapeit_out_files("{chr}")
@@ -129,7 +129,8 @@ rule pipe_finish:
         # chr_phased=config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+".haps.gz",
         # samples=config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+".samples"
         # config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+"_relate"
-        base_out + "/chr"+config["chr"]+"_relate_popsize"
+        # base_out + "/chr"+config["chr"]+"_relate_popsize"
+        expand(config["output_folder"] + "/" + config["pop"] + "/" + config["chr"]+ "/chr"+config["chr"]+"_relate_popsize{ext}", ext=[".pdf",".anc.gz",".mut.gz",".dist",".coal",".bin","_avg.rate"])
     output:
         # generate_end_of_pipeline_files("{chr}")
         # config["output_folder"]+"/"+config["pop"]+"/{chr}.pipe.done"
