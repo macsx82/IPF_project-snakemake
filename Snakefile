@@ -62,7 +62,7 @@ rule relate_poplabels:
         config["output_folder"] + "/" + config["pop"] + "/" + config["chr"] + "/chr"+config["chr"]+".poplabels"
     shell:
         # "shapeit -V {input_f}/{input} -M {g_map} -O {output.chr_phased} {output.samples} -T {threads}"
-        "(echo \"sample population group sex\";tail -n+3 {input} | awk '{{OFS=" "}}{{print $1,{config[pop_group]},{config[pop]},$6}}') > {params.base_out}/{output}"
+        "(echo \"sample population group sex\";tail -n+3 {input} | awk '{{OFS=\" \"}}{{print $1,\"{config[pop_group]}\",\"{config[pop]}\",$6}}') > {params.base_out}/{output}"
 
 rule relate:
     input:
@@ -105,7 +105,7 @@ rule relate_pop_s_est:
         # base_out + "/chr"+config["chr"]+"_relate_popsize"
     shell:
         # "shapeit -V {input_f}/{input} -M {g_map} -O {output.chr_phased} {output.samples} -T {threads}"
-        "{config[relate_path]}/scripts/EstimatePopulationSize/EstimatePopulationSize.sh -i {params.in_prefix} --poplabels{input.poplabel_file} --m 1.25e-8 \ "
+        "{config[relate_path]}/scripts/EstimatePopulationSize/EstimatePopulationSize.sh -i {params.in_prefix} --poplabels {input.poplabel_file} --m 1.25e-8 \ "
         " --seed {config[relate_seed]} -o {params.out_prefix}"
 
 # rule relate_mut_rate_est:
