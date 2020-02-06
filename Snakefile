@@ -72,7 +72,7 @@ rule relate:
     params:
         input_f=config["input_folder"],
         g_map="/netapp/nfs/resources/1000GP_phase3/impute/genetic_map_chr"+config["chr"]+"_combined_b37.txt",
-        base_out=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"]
+        base_out=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"],
         # out_prefix=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"] + "/chr"+config["chr"]+"_relate"
         out_prefix="chr"+config["chr"]+"_relate"
     output:
