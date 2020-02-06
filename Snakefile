@@ -166,7 +166,7 @@ rule relate_pop_s_est:
         in_prefix=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"] + "/chr"+config["chr"]+"_relate",
         out_prefix=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"] + "/chr"+config["chr"]+"_relate_popsize",
         # relate_threshold=generate_pop_size_threshold_est("{input.poplabel_file}")
-        relate_threshold=5
+        relate_threshold=0
     output:
         # generate_shapeit_out_files("{input.chr}")
         # generate_shapeit_out_files("{chr}")
@@ -224,7 +224,7 @@ rule relate_mut_rate_est:
 
 rule relate_detect_selection:
     input:
-        relate_files=expand(config["output_folder"] + "/" + config["pop"] + "/" + config["chr"]+ "/chr"+config["chr"]+"_relate_popsize{ext}", ext=[".anc", ".mut"])
+        relate_files=expand(config["output_folder"] + "/" + config["pop"] + "/" + config["chr"]+ "/chr"+config["chr"]+"_relate_popsize{ext}", ext=[".anc.gz", ".mut.gz"])
     params:
         in_prefix=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"] + "/chr"+config["chr"]+"_relate_popsize",
         out_prefix=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"] + "/chr"+config["chr"]+"_relate_pos_sel"
