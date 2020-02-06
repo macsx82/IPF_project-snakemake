@@ -224,7 +224,7 @@ rule relate_mut_rate_est:
 
 rule relate_detect_selection:
     input:
-        relate_files=expand(config["output_folder"] + "/" + config["pop"] + "/" + config["chr"]+ "/chr"+config["chr"]+"_relate_popsize{ext}", ext=[".anc", ".mut"]),
+        relate_files=expand(config["output_folder"] + "/" + config["pop"] + "/" + config["chr"]+ "/chr"+config["chr"]+"_relate_popsize{ext}", ext=[".anc", ".mut"])
     params:
         in_prefix=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"] + "/chr"+config["chr"]+"_relate_popsize",
         out_prefix=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"] + "/chr"+config["chr"]+"_relate_pos_sel"
@@ -263,6 +263,7 @@ rule pipe_finish:
         # base_out + "/chr"+config["chr"]+"_relate_popsize"
         config["output_folder"] + "/" + config["pop"] + "/" + config["chr"]+ "/chr"+config["chr"]+"_relate_mut_rate_avg.rate",
         expand(config["output_folder"] + "/" + config["pop"] + "/" + config["chr"]+ "/chr"+config["chr"]+"_relate_popsize{ext}", ext=[".pdf",".anc.gz",".mut.gz",".dist",".coal",".bin","_avg.rate"])
+        expand(config["output_folder"] + "/" + config["pop"] + "/" + config["chr"]+ "/chr"+config["chr"]+"_relate_pos_sel{ext}", ext=[".freq",".lin",".sele"])
     output:
         # generate_end_of_pipeline_files("{chr}")
         # config["output_folder"]+"/"+config["pop"]+"/{chr}.pipe.done"
