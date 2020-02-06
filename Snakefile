@@ -104,7 +104,7 @@ rule relate_pop_s_est:
         g_map="/netapp/nfs/resources/1000GP_phase3/impute/genetic_map_chr"+config["chr"]+"_combined_b37.txt",
         # base_out=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"]
         in_prefix=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"] + "/chr"+config["chr"]+"_relate",
-        out_prefix=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"] + "/chr"+config["chr"]+"_relate_popsize"
+        out_prefix=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"] + "/chr"+config["chr"]+"_relate_popsize",
         # relate_threshold=generate_pop_size_threshold_est("{input.poplabel_file}")
         relate_threshold=5
     output:
