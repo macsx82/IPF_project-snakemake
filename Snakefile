@@ -23,7 +23,7 @@ def generate_relate_clean_in_files(key):
 def generate_pop_size_threshold_est(sample_file):
     #we need to use the haplotype file, to count how many haps we have.
     #we can use the sample file, which is lighter
-    return sum(1 for line in open('%s' %(sample_file),'r')) - 1 
+    return (sum(1 for line in open('%s' %(sample_file),'r')) - 1 )*2
 
 
 def generate_end_of_pipeline_files(key):
@@ -211,6 +211,33 @@ rule relate_mut_rate_est:
         """
         set +e
         {config[relate_path]}/bin/RelateMutationRate --mode Avg -i {params.in_prefix} -o {params.out_prefix}
+        exitcode=$?
+        if [ $exitcode -eq 0 ]
+        then
+            echo "No error found..exiting correctly"
+            exit 0
+        else
+            echo "WARNING....The software raised some errors or warning, be careful and check the results."
+            exit 0
+        fi        
+        """
+
+rule relate_detect_selection:
+    input:
+        relate_files=expand(config["output_folder"] + "/" + config["pop"] + "/" + config["chr"]+ "/chr"+config["chr"]+"_relate_popsize{ext}", ext=[".anc", ".mut"]),
+    params:
+        in_prefix=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"] + "/chr"+config["chr"]+"_relate_popsize",
+        out_prefix=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"] + "/chr"+config["chr"]+"_relate_pos_sel"
+    output:
+        expand(config["output_folder"] + "/" + config["pop"] + "/" + config["chr"]+ "/chr"+config["chr"]+"_relate_pos_sel{ext}", ext=[".freq",".lin",".sele"])
+    shell:
+        """
+        set +e
+        {config[relate_path]}/scripts/DetectSelection/DetectSelection.sh \
+                 -i {params.in_prefix} \
+                 -o {params.out_prefix} \
+                 -m 1.25e-8 \
+                 --years_per_gen 28
         exitcode=$?
         if [ $exitcode -eq 0 ]
         then
