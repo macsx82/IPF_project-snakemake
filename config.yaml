@@ -46,6 +46,12 @@ relate_path:
 
 relate_seed:
   152433333
+
+ancestor_ref:
+  ""
+
+mask_ref:
+  ""
 # config_text = """
 # pop:
 #   CARL
