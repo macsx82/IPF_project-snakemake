@@ -72,8 +72,9 @@ rule relate:
     params:
         input_f=config["input_folder"],
         g_map="/netapp/nfs/resources/1000GP_phase3/impute/genetic_map_chr"+config["chr"]+"_combined_b37.txt",
-        # base_out=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"]
-        out_prefix=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"] + "/chr"+config["chr"]+"_relate"
+        base_out=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"]
+        # out_prefix=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"] + "/chr"+config["chr"]+"_relate"
+        out_prefix="chr"+config["chr"]+"_relate"
     output:
         # generate_shapeit_out_files("{input.chr}")
         # generate_shapeit_out_files("{chr}")
@@ -83,7 +84,7 @@ rule relate:
     shell:
         # "shapeit -V {input_f}/{input} -M {g_map} -O {output.chr_phased} {output.samples} -T {threads}"
         # "{config[relate_path]}/bin/Relate --mode All --m 1.25e-8 -N 30000 --haps {input.chr_phased} --sample {input.samples} --map {params.g_map} --seed {config[relate_seed]} -o {params.out_prefix}"
-        "{config[relate_path]}/bin/Relate --mode All --m 1.25e-8 -N 30000 --haps {input[0]} --sample {input[1]} --map {params.g_map} --seed {config[relate_seed]} -o {params.out_prefix}"
+        "cd {params.base_out};{config[relate_path]}/bin/Relate --mode All --m 1.25e-8 -N 30000 --haps {input[0]} --sample {input[1]} --map {params.g_map} --seed {config[relate_seed]} -o {params.out_prefix}"
 
 rule relate_pop_s_est:
     input:
