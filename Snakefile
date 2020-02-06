@@ -64,7 +64,7 @@ rule relate_poplabels:
     priority: 1
     shell:
         # "shapeit -V {input_f}/{input} -M {g_map} -O {output.chr_phased} {output.samples} -T {threads}"
-        "(echo \"sample population group sex\";tail -n+3 {input[1]} | awk '{{OFS=\" \"}}{{print $1,\"{config[pop_group]}\",\"{config[pop]}\",0}}') > {output}"
+        "(echo \"sample population group sex\";tail -n+3 {input[1]} | awk '{{OFS=\" \"}}{{print $1,\"{config[pop]}\",\"{config[pop_group]}\",0}}') > {output}"
 
 rule relate:
     input:
