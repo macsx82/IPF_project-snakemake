@@ -92,8 +92,17 @@ rule relate:
     shell:
         # "shapeit -V {input_f}/{input} -M {g_map} -O {output.chr_phased} {output.samples} -T {threads}"
         # "{config[relate_path]}/bin/Relate --mode All --m 1.25e-8 -N 30000 --haps {input.chr_phased} --sample {input.samples} --map {params.g_map} --seed {config[relate_seed]} -o {params.out_prefix}"
-        "cd {params.base_out};{config[relate_path]}/bin/Relate --mode All -m 1.25e-8 -N 30000 --haps {input[0]} --sample {input[1]} --map {params.g_map} --seed {config[relate_seed]} -o {params.out_prefix}"
-
+        """
+        cd {params.base_out};
+        {config[relate_path]}/bin/Relate --mode All -m 1.25e-8 -N 30000 --haps {input[0]} --sample {input[1]} --map {params.g_map} --seed {config[relate_seed]} -o {params.out_prefix}
+        exitcode=$?
+        if [ $exitcode -eq 1 ]
+        then
+            exit 1
+        else
+            exit 0
+        fi
+        """
 rule relate_pop_s_est:
     input:
         # relate_files=config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+"_relate",
