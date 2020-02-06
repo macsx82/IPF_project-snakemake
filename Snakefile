@@ -141,6 +141,7 @@ rule relate:
         # "shapeit -V {input_f}/{input} -M {g_map} -O {output.chr_phased} {output.samples} -T {threads}"
         # "{config[relate_path]}/bin/Relate --mode All --m 1.25e-8 -N 30000 --haps {input.chr_phased} --sample {input.samples} --map {params.g_map} --seed {config[relate_seed]} -o {params.out_prefix}"
         """
+        set +e
         cd {params.base_out};
         {config[relate_path]}/bin/Relate --mode All -m 1.25e-8 -N 30000 --haps {input[0]} --sample {input[1]} --map {params.g_map} --seed {config[relate_seed]} -o {params.out_prefix}
         exitcode=$?
