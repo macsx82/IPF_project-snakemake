@@ -88,7 +88,7 @@ rule relate_pop_s_est:
     input:
         # relate_files=config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+"_relate",
         relate_files=expand(config["output_folder"] + "/" + config["pop"] + "/" + config["chr"]+ "/chr"+config["chr"]+"_relate{ext}", ext=[".anc", ".mut"]),
-        poplabel_file=config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+".poplabels"
+        poplabel_file=config["output_folder"] + "/" + config["pop"] + config["chr"]+ "/chr"+config["chr"]+".poplabels"
     params:
         input_f=config["input_folder"],
         g_map="/netapp/nfs/resources/1000GP_phase3/impute/genetic_map_chr"+config["chr"]+"_combined_b37.txt",
