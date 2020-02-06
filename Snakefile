@@ -76,7 +76,8 @@ rule relate:
         # generate_shapeit_out_files("{input.chr}")
         # generate_shapeit_out_files("{chr}")
         # base_out + "/chr"+config["chr"]+"_relate"
-        multiext(config["output_folder"] + "/" + config["pop"] + "/" + config["chr"]+ "/chr"+config["chr"]+"_relate", ".anc", ".mut")
+        # multiext(config["output_folder"] + "/" + config["pop"] + "/" + config["chr"]+ "/chr"+config["chr"]+"_relate", ".anc", ".mut")
+        expand(config["output_folder"] + "/" + config["pop"] + "/" + config["chr"]+ "/chr"+config["chr"]+"_relate.{ext}", ext=[".anc", ".mut"])
     shell:
         # "shapeit -V {input_f}/{input} -M {g_map} -O {output.chr_phased} {output.samples} -T {threads}"
         "{config[relate_path]}/bin/Relate --mode All --m 1.25e-8 -N 30000 --haps {input.chr_phased} --sample {input.samples} --map {params.g_map} --seed {config[relate_seed]} -o {params.out_prefix}"
