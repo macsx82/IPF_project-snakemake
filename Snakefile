@@ -36,7 +36,7 @@ rule phase:
         config["input_folder"] + "/" + config["chr"]+ ".vcf.gz"
     params:
         input_f=config["input_folder"],
-        g_map="/netapp/nfs/resources/1000GP_phase3/impute/genetic_map_chr"+config["chr"]+"_combined_b37.txt"
+        g_map="/netapp/nfs/resources/1000GP_phase3/impute/genetic_map_chr"+config["chr"]+"_combined_b37.txt",
         base_out=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"]
     output:
         # generate_shapeit_out_files("{input.chr}")
@@ -69,7 +69,7 @@ rule relate:
         samples=config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+".samples"
     params:
         input_f=config["input_folder"],
-        g_map="/netapp/nfs/resources/1000GP_phase3/impute/genetic_map_chr"+config["chr"]+"_combined_b37.txt"
+        g_map="/netapp/nfs/resources/1000GP_phase3/impute/genetic_map_chr"+config["chr"]+"_combined_b37.txt",
         base_out=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"]
     output:
         # generate_shapeit_out_files("{input.chr}")
@@ -85,7 +85,7 @@ rule relate_pop_s_est:
         poplabel_file=config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+".poplabels"
     params:
         input_f=config["input_folder"],
-        g_map="/netapp/nfs/resources/1000GP_phase3/impute/genetic_map_chr"+config["chr"]+"_combined_b37.txt"
+        g_map="/netapp/nfs/resources/1000GP_phase3/impute/genetic_map_chr"+config["chr"]+"_combined_b37.txt",
         base_out=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"]
     output:
         # generate_shapeit_out_files("{input.chr}")
