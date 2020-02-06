@@ -84,12 +84,14 @@ rule relate:
 
 rule relate_pop_s_est:
     input:
-        relate_files=config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+"_relate",
+        # relate_files=config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+"_relate",
+        relate_files=expand(config["output_folder"] + "/" + config["pop"] + "/" + config["chr"]+ "/chr"+config["chr"]+"_relate{ext}", ext=[".anc", ".mut"]),
         poplabel_file=config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+".poplabels"
     params:
         input_f=config["input_folder"],
         g_map="/netapp/nfs/resources/1000GP_phase3/impute/genetic_map_chr"+config["chr"]+"_combined_b37.txt",
         # base_out=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"]
+        in_prefix=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"] + "/chr"+config["chr"]+"_relate"
         out_prefix=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"] + "/chr"+config["chr"]+"_relate_popsize"
     output:
         # generate_shapeit_out_files("{input.chr}")
@@ -99,7 +101,7 @@ rule relate_pop_s_est:
         # base_out + "/chr"+config["chr"]+"_relate_popsize"
     shell:
         # "shapeit -V {input_f}/{input} -M {g_map} -O {output.chr_phased} {output.samples} -T {threads}"
-        "{config[relate_path]}/scripts/EstimatePopulationSize/EstimatePopulationSize.sh -i {input.relate_files} --poplabels{input.poplabel_file} --m 1.25e-8 \ "
+        "{config[relate_path]}/scripts/EstimatePopulationSize/EstimatePopulationSize.sh -i {params.in_prefix} --poplabels{input.poplabel_file} --m 1.25e-8 \ "
         " --seed {config[relate_seed]} -o {params.out_prefix}"
 
 # rule relate_mut_rate_est:
