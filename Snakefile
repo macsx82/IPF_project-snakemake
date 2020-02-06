@@ -116,8 +116,8 @@ rule pipe_finish:
         # samples=config["output_folder"] + "/" + config["pop"] + "/chr{chr}.samples"
         # chr_phased=config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+".haps.gz",
         # samples=config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+".samples"
-        config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+"_relate"
-        # config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+"_relate_popsize"
+        # config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+"_relate"
+        config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+"_relate_popsize"
     output:
         # generate_end_of_pipeline_files("{chr}")
         # config["output_folder"]+"/"+config["pop"]+"/{chr}.pipe.done"
