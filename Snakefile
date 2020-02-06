@@ -70,8 +70,8 @@ rule relate:
     params:
         input_f=config["input_folder"],
         g_map="/netapp/nfs/resources/1000GP_phase3/impute/genetic_map_chr"+config["chr"]+"_combined_b37.txt",
-        base_out=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"]
-        out_prefix=base_out + "/chr"+config["chr"]+"_relate"
+        # base_out=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"]
+        out_prefix=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"] + "/chr"+config["chr"]+"_relate"
     output:
         # generate_shapeit_out_files("{input.chr}")
         # generate_shapeit_out_files("{chr}")
@@ -88,8 +88,8 @@ rule relate_pop_s_est:
     params:
         input_f=config["input_folder"],
         g_map="/netapp/nfs/resources/1000GP_phase3/impute/genetic_map_chr"+config["chr"]+"_combined_b37.txt",
-        base_out=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"]
-        out_prefix=base_out + "/chr"+config["chr"]+"_relate_popsize"
+        # base_out=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"]
+        out_prefix=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"] + "/chr"+config["chr"]+"_relate_popsize"
     output:
         # generate_shapeit_out_files("{input.chr}")
         # generate_shapeit_out_files("{chr}")
