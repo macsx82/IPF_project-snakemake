@@ -9,8 +9,8 @@ print (config['chr_to_phase'].keys())
 
 
 def generate_shapeit_out_files(key):
-    chr_phased= "%s/%s/%s/chr%s.haps.gz" % (config["output_folder"],key,config["pop"],key)
-    samples= "%s/%s/%s/chr%s.samples" % (config["output_folder"],key,config["pop"],key)
+    chr_phased= "%s/%s/%s/chr%s.haps.gz" % (config["output_folder"],config["pop"],key,key)
+    samples= "%s/%s/%s/chr%s.samples" % (config["output_folder"],config["pop"],key,key)
 
     return chr_phased,samples
 
