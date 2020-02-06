@@ -76,21 +76,21 @@ rule relate:
         # "shapeit -V {input_f}/{input} -M {g_map} -O {output.chr_phased} {output.samples} -T {threads}"
         "{config[relate_path]}/bin/Relate --mode All --m 1.25e-8 -N 30000 --haps {input.chr_phased} --sample {input.samples} --map {params.g_map} --seed {config[relate_seed]} -o {output}"
 
-# rule relate_pop_s_est:
-#     input:
-#         relate_files=config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+"_relate",
-#         poplabel_file=config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+".poplabels"
-#     params:
-#         input_f=config["input_folder"],
-#         g_map="/netapp/nfs/resources/1000GP_phase3/impute/genetic_map_chr"+config["chr"]+"_combined_b37.txt"
-#     output:
-#         # generate_shapeit_out_files("{input.chr}")
-#         # generate_shapeit_out_files("{chr}")
-#         config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+"_relate_popsize"
-#     shell:
-#         # "shapeit -V {input_f}/{input} -M {g_map} -O {output.chr_phased} {output.samples} -T {threads}"
-#         "{config[relate_path]}/scripts/EstimatePopulationSize/EstimatePopulationSize.sh -i {input.relate_files} --poplabels{input.poplabel_file} --m 1.25e-8 \ "
-#         " --seed {config[relate_seed]} -o {output}"
+rule relate_pop_s_est:
+    input:
+        relate_files=config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+"_relate",
+        poplabel_file=config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+".poplabels"
+    params:
+        input_f=config["input_folder"],
+        g_map="/netapp/nfs/resources/1000GP_phase3/impute/genetic_map_chr"+config["chr"]+"_combined_b37.txt"
+    output:
+        # generate_shapeit_out_files("{input.chr}")
+        # generate_shapeit_out_files("{chr}")
+        config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+"_relate_popsize"
+    shell:
+        # "shapeit -V {input_f}/{input} -M {g_map} -O {output.chr_phased} {output.samples} -T {threads}"
+        "{config[relate_path]}/scripts/EstimatePopulationSize/EstimatePopulationSize.sh -i {input.relate_files} --poplabels{input.poplabel_file} --m 1.25e-8 \ "
+        " --seed {config[relate_seed]} -o {output}"
 
 # rule relate_mut_rate_est:
 #     input:
