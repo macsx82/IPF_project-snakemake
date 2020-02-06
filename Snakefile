@@ -143,7 +143,7 @@ rule relate:
         """
         cd {params.base_out};
         {config[relate_path]}/bin/Relate --mode All -m 1.25e-8 -N 30000 --haps {input[0]} --sample {input[1]} --map {params.g_map} --seed {config[relate_seed]} -o {params.out_prefix}
-
+        exitcode=$?
         if [ $exitcode -eq 0 ]
         then
             echo "No error found..exiting correctly"
