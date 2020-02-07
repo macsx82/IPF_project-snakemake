@@ -29,7 +29,10 @@ def generate_pop_size_threshold_est(sample_file):
 def generate_end_of_pipeline_files(key):
     return "%s/%s/chr%s.pipe.done" % (config["output_folder"],config["pop"],key)
 
+#define parameter useful to cluster job submission
+localrules: all
 
+#define rules
 rule all:
     input:
         # config["output_folder"]+"/"+config["pop"]+"/{chr}.pipe.done"
@@ -55,7 +58,7 @@ rule phase:
         generate_shapeit_out_files(config["chr"])
         # chr_phased=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"] + "/chr"+config["chr"]+".haps.gz",
         # samples= params[base_out] + "/chr"+config["chr"]+".samples"
-    # threads: 2
+    threads: 4
     shell:
         # "shapeit -V {input_f}/{input} -M {g_map} -O {output.chr_phased} {output.samples} -T {threads}"
         # "{config[shapeit_path]} -V {input} -M {params.g_map} -O {output.chr_phased} {output.samples} -T {threads}"
@@ -260,3 +263,9 @@ rule pipe_finish:
         config["output_folder"]+"/"+config["pop"]+"/"+config["chr"] +".pipe.done"
     shell:
         "touch {output}"
+
+onsuccess:
+    print("The workflow finished without errors!")
+
+onerror:
+    print("An error occurred in the current workflow execution!!")
