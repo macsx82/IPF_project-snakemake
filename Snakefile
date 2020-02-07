@@ -15,10 +15,10 @@ def generate_shapeit_out_files(key):
     return chr_phased,samples
 
 def generate_relate_clean_in_files(key):
-    chr_phased= "%s/%s/%s/chr%s.relate.haps.gz" % (config["output_folder"],config["pop"],key,key)
-    samples= "%s/%s/%s/chr%s.relate.samples" % (config["output_folder"],config["pop"],key,key)
+    chr_phased= "%s/%s/%s/chr%s.relate_clean.haps.gz" % (config["output_folder"],config["pop"],key,key)
+    samples= "%s/%s/%s/chr%s.relate_clean.samples" % (config["output_folder"],config["pop"],key,key)
 
-    return chr_phased,samples
+    return chr_clean_phased,clean_samples
 
 def generate_pop_size_threshold_est(sample_file):
     #we need to use the haplotype file, to count how many haps we have.
@@ -63,45 +63,34 @@ rule phase:
         # "touch {output.chr_phased} {output.samples}"
 
 #section to prepare relate input files
-# rule relate_prepare_input:
-#     input:
-#         generate_shapeit_out_files(config["chr"]),
-#         config["output_folder"] + "/" + config["pop"] + "/" + config["chr"] + "/chr"+config["chr"]+".poplabels"
-#         # chr_phased=config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+".haps.gz",
-#         # samples=config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+".samples"
-#     params:
-#         input_f=config["input_folder"],
-#         g_map="/netapp/nfs/resources/1000GP_phase3/impute/genetic_map_chr"+config["chr"]+"_combined_b37.txt",
-#         base_out=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"],
-#         # out_prefix=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"] + "/chr"+config["chr"]+"_relate"
-#         out_prefix="chr"+config["chr"]+"_relate"
-
-#     output:
-#         # generate_shapeit_out_files("{input.chr}")
-#         # generate_shapeit_out_files("{chr}")
-#         # base_out + "/chr"+config["chr"]+"_relate"
-#         # multiext(config["output_folder"] + "/" + config["pop"] + "/" + config["chr"]+ "/chr"+config["chr"]+"_relate", ".anc", ".mut")
-#         generate_relate_clean_in_files(config["chr"])
-#         expand(config["output_folder"] + "/" + config["pop"] + "/" + config["chr"]+ "/chr"+config["chr"]+"_relate{ext}", ext=[".anc", ".mut"])
-#     shell:
-#         # "shapeit -V {input_f}/{input} -M {g_map} -O {output.chr_phased} {output.samples} -T {threads}"
-#         # "{config[relate_path]}/bin/Relate --mode All --m 1.25e-8 -N 30000 --haps {input.chr_phased} --sample {input.samples} --map {params.g_map} --seed {config[relate_seed]} -o {params.out_prefix}"
-#         """
-#         {config[relate_path]}/scripts/PrepareInputFiles/PrepareInputFiles.sh --haps {input[0]} --sample {input[0]} \
-#          --ancestor {config[ancestor_ref]}  --mask {config[mask_ref]} \
-#          --remove_ids remove_ids.txt \
-#          --poplabels {input[0]} -o {params.out_prefix}
-        
-#         exitcode=$?
-#         echo "${{exitcode}}"
-
-#         if [ $exitcode -eq 1 ]
-#         then
-#             exit 1
-#         else
-#             exit 0
-#         fi
-#         """
+rule relate_prepare_input:
+    input:
+        generate_shapeit_out_files(config["chr"]),
+        config["output_folder"] + "/" + config["pop"] + "/" + config["chr"] + "/chr"+config["chr"]+".poplabels"
+        # chr_phased=config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+".haps.gz",
+        # samples=config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+".samples"
+    params:
+        out_prefix=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"]+ "/chr"+config["chr"]+".relate_clean",
+        ancestor_chr=config["ancestor_ref_path"]+"/human_ancestor_"+config["chr"]+".fa"
+    output:
+        generate_relate_clean_in_files(config["chr"])
+        # expand(config["output_folder"] + "/" + config["pop"] + "/" + config["chr"]+ "/chr"+config["chr"]+".relate_clean.{ext}", ext=["haps.gz", "samples"])
+    shell:
+        """
+        set +e
+        {config[relate_path]}/scripts/PrepareInputFiles/PrepareInputFiles.sh --haps {input[0]} --sample {input[0]} \
+         --ancestor {params.ancestor_chr} \
+         --poplabels {input[0]} -o {params.out_prefix}
+        exitcode=$?
+        if [ $exitcode -eq 0 ]
+        then
+            echo "No error found..exiting correctly"
+            exit 0
+        else
+            echo "WARNING....The software raised some errors or warning, be careful and check the results."
+            exit 0
+        fi
+        """
 
 
 rule relate_poplabels:
@@ -122,7 +111,8 @@ rule relate_poplabels:
 
 rule relate:
     input:
-        generate_shapeit_out_files(config["chr"])
+        # generate_shapeit_out_files(config["chr"])
+        generate_relate_clean_in_files(config["chr"])
         # chr_phased=config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+".haps.gz",
         # samples=config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+".samples"
     params:

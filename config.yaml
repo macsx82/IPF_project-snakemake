@@ -47,8 +47,8 @@ relate_path:
 relate_seed:
   152433333
 
-ancestor_ref:
-  ""
+ancestor_ref_path:
+  "/netapp/nfs/resources/ref/Homo_sapiens/GRCh37_59/human_ancestor_GRCh37_e59"
 
 mask_ref:
   ""
