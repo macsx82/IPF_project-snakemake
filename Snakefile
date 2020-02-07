@@ -16,7 +16,7 @@ def generate_shapeit_out_files(key):
 
 def generate_relate_clean_in_files(key):
     chr_clean_phased= "%s/%s/%s/chr%s.relate_clean.haps.gz" % (config["output_folder"],config["pop"],key,key)
-    clean_samples= "%s/%s/%s/chr%s.relate_clean.samples" % (config["output_folder"],config["pop"],key,key)
+    clean_samples= "%s/%s/%s/chr%s.relate_clean.sample" % (config["output_folder"],config["pop"],key,key)
 
     return chr_clean_phased,clean_samples
 
