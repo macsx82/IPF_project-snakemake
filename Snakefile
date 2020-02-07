@@ -66,7 +66,7 @@ rule phase:
 rule relate_prepare_input:
     input:
         generate_shapeit_out_files(config["chr"]),
-        config["output_folder"] + "/" + config["pop"] + "/" + config["chr"] + "/chr"+config["chr"]+".poplabels"
+        poplabel_file=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"] + "/chr"+config["chr"]+".poplabels"
         # chr_phased=config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+".haps.gz",
         # samples=config["output_folder"] + "/" + config["pop"] + "/chr"+config["chr"]+".samples"
     params:
@@ -80,7 +80,7 @@ rule relate_prepare_input:
         set +e
         {config[relate_path]}/scripts/PrepareInputFiles/PrepareInputFiles.sh --haps {input[0]} --sample {input[0]} \
          --ancestor {params.ancestor_chr} \
-         --poplabels {input[0]} -o {params.out_prefix}
+         --poplabels {input.poplabel_file} -o {params.out_prefix}
         exitcode=$?
         if [ $exitcode -eq 0 ]
         then
