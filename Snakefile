@@ -78,7 +78,7 @@ rule relate_prepare_input:
     shell:
         """
         set +e
-        {config[relate_path]}/scripts/PrepareInputFiles/PrepareInputFiles.sh --haps {input[0]} --sample {input[0]} \
+        {config[relate_path]}/scripts/PrepareInputFiles/PrepareInputFiles.sh --haps {input[0]} --sample {input[1]} \
          --ancestor {params.ancestor_chr} \
          --poplabels {input.poplabel_file} -o {params.out_prefix}
         exitcode=$?
