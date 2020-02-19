@@ -65,6 +65,22 @@ rule phase:
         "{config[shapeit_path]} -V {input} -M {params.g_map} -O {output[0]} {output[1]} -T {threads}"
         # "touch {output.chr_phased} {output.samples}"
 
+rule relate_poplabels:
+    input:
+        # config["output_folder"] + "/" + config["pop"] + "/" + config["chr"] + "/chr"+config["chr"]+".samples"
+        generate_shapeit_out_files(config["chr"])
+    params:
+        input_f=config["input_folder"],
+        # base_out=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"]
+    output:
+        # generate_shapeit_out_files("{input.chr}")
+        # generate_shapeit_out_files("{chr}")
+        config["output_folder"] + "/" + config["pop"] + "/" + config["chr"] + "/chr"+config["chr"]+".poplabels"
+    priority: 1
+    shell:
+        # "shapeit -V {input_f}/{input} -M {g_map} -O {output.chr_phased} {output.samples} -T {threads}"
+        "(echo \"sample population group sex\";tail -n+3 {input[1]} | awk '{{OFS=\" \"}}{{print $1,\"{config[pop]}\",\"{config[pop_group]}\",0}}') > {output}"
+
 #section to prepare relate input files
 rule relate_prepare_input:
     input:
@@ -94,23 +110,6 @@ rule relate_prepare_input:
             exit 0
         fi
         """
-
-
-rule relate_poplabels:
-    input:
-        # config["output_folder"] + "/" + config["pop"] + "/" + config["chr"] + "/chr"+config["chr"]+".samples"
-        generate_shapeit_out_files(config["chr"])
-    params:
-        input_f=config["input_folder"],
-        # base_out=config["output_folder"] + "/" + config["pop"] + "/" + config["chr"]
-    output:
-        # generate_shapeit_out_files("{input.chr}")
-        # generate_shapeit_out_files("{chr}")
-        config["output_folder"] + "/" + config["pop"] + "/" + config["chr"] + "/chr"+config["chr"]+".poplabels"
-    priority: 1
-    shell:
-        # "shapeit -V {input_f}/{input} -M {g_map} -O {output.chr_phased} {output.samples} -T {threads}"
-        "(echo \"sample population group sex\";tail -n+3 {input[1]} | awk '{{OFS=\" \"}}{{print $1,\"{config[pop]}\",\"{config[pop_group]}\",0}}') > {output}"
 
 rule relate:
     input:
